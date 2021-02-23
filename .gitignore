@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+***/mlruns
+*.png
+***/__pycache__
