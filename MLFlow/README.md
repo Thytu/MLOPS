@@ -1,2 +1,5 @@
 # MLOPS
-MLOPS pipeline with mulitple frameworks
+MLOPS pipeline with MLFlow
+
+
+to run: `python main.py ; mlflow ui --backend-store-uri sqlite:///mlruns.db`

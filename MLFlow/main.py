@@ -10,16 +10,14 @@ from mlflow.tracking import MlflowClient
 import network
 from data_handler import get_dataset
 
+mlflow.set_tracking_uri("sqlite:///mlruns.db")
+
 client = MlflowClient()
+create_experiment_id = client.create_experiment("Learning rate impact 3")
 
-#create_experiment_id = client.create_experiment("Learning rate impact")
 
-# mlflow.set_tracking_uri("sqlite:///tmp/my_tracking")
-client.create_registered_model("MyName", {"tagName": "myTagName"}, "This is a description")
-# model_uri = f"runs:/{run.info.run_id}/my-model"
-# mv = client.create_model_version(name, model_uri, run.info.run_id, description=desc)
+client.create_registered_model("MyModelName", {"tagName": "modelTagValue"}, "This is a description")
 
-exit()
 EPOCHS = 3
 BATCH_SIZE = 32
 
@@ -39,12 +37,6 @@ for lr in [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]:
     client.log_param(run.info.run_id, "learning_rate", lr)
     client.log_param(run.info.run_id, "EPOCHS", EPOCHS)
     client.log_param(run.info.run_id, "batch_size", BATCH_SIZE)
-    
-    # client.log_params({
-        # "learning_rate": lr,
-        # "number_of_epoch": EPOCHS,
-        # "batch_size": BATCH_SIZE
-    # })
 
     neuralNet = network.Network(len(next(iter(train_loader))[0][0][0][0])**2, 10)
     optimizer = optim.Adam(neuralNet.parameters(), lr=lr)
@@ -60,19 +52,10 @@ for lr in [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]:
         nb_accurate, loss = network.train(neuralNet, train_loader, optimizer)
         val_nb_accurate, validation_loss = network.test(neuralNet, test_loader)
 
-        # client.log_metrics({
-            # "training_acc": nb_accurate / TRAINING_SIZE * 100,
-            # "training_loss": loss / TRAINING_SIZE * 100,
-            # "validation_acc": val_nb_accurate / TESTING_SIZE * 100,
-            # "validation_loss": validation_loss / TESTING_SIZE * 100
-        # })
-
         client.log_metric(run.info.run_id, "training_acc", nb_accurate / TRAINING_SIZE * 100)
         client.log_metric(run.info.run_id, "training_loss", loss / TRAINING_SIZE * 100)
         client.log_metric(run.info.run_id, "validation_acc", val_nb_accurate / TESTING_SIZE * 100)
         client.log_metric(run.info.run_id, "validation_loss", validation_loss / TESTING_SIZE * 100)
-
-                
 
         training_accuracies.append(nb_accurate / TRAINING_SIZE * 100)
         training_losses.append(loss / TRAINING_SIZE * 100)
