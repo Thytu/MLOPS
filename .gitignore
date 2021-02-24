@@ -131,3 +131,6 @@ dmypy.json
 ***/mlruns
 *.png
 ***/__pycache__
+***/*.txt
+clt.py
+
