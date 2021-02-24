@@ -11,8 +11,15 @@ import network
 from data_handler import get_dataset
 
 client = MlflowClient()
-create_experiment_id = client.create_experiment("Learning rate impact")
 
+#create_experiment_id = client.create_experiment("Learning rate impact")
+
+# mlflow.set_tracking_uri("sqlite:///tmp/my_tracking")
+client.create_registered_model("MyName", {"tagName": "myTagName"}, "This is a description")
+# model_uri = f"runs:/{run.info.run_id}/my-model"
+# mv = client.create_model_version(name, model_uri, run.info.run_id, description=desc)
+
+exit()
 EPOCHS = 3
 BATCH_SIZE = 32
 
