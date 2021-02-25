@@ -134,4 +134,5 @@ dmypy.json
 ***/*.txt
 clt.py
 MLFlow/data
-MLFlow/mlruns.db
+MLFlow/*/mlruns.db
+MLFlow/*/data
