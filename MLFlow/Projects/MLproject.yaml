@@ -1,0 +1,18 @@
+name: My Project
+
+conda_env: conda.yaml
+
+entry_points:
+  preprocessing:
+    parameters:
+      dataset_folder: path
+    command: "python preprocessing/main.py {dataset_folder}"
+  # main:
+  #   parameters:
+  #     data_file: path
+  #     regularization: {type: float, default: 0.1}
+  #   command: "python train.py -r {regularization} {data_file}"
+  # validate:
+  #   parameters:
+  #     data_file: path
+  #   command: "python validate.py {data_file}"
