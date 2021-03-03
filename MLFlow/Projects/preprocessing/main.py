@@ -64,10 +64,6 @@ def create_data_viz(train_set):
 @click.option("--zip-name", default="titanic.csv", type=str)
 @click.option("--data-name", default="train.csv", type=str)
 def preprocess(dataset_folder, zip_name, data_name):
-    # path = "../data/train.csv" if len(sys.argv) < 2 else sys.argv[1]
-    # zip_name = "../data/train.csv" if len(sys.argv) < 3 else sys.argv[2]
-    # data_name = "../data/train.csv" if len(sys.argv) < 4 else sys.argv[3]
-
     extract_data(path=dataset_folder, zip_name=zip_name, data_name=data_name)
 
     train_set = pd.read_csv(f"{dataset_folder}/{data_name}", low_memory=False).drop(["PassengerId", "Name", "Ticket", "Cabin"], axis=1)
