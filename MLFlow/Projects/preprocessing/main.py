@@ -1,3 +1,5 @@
+import click
+import sys
 import os
 import pandas as pd
 import numpy as np
@@ -54,10 +56,21 @@ def create_data_viz(train_set):
     if not os.path.exists("artifacts"): os.mkdir("artifacts")
     plt.savefig("artifacts/plot.png")
 
-if __name__ == "__main__":
-    extract_data()
+@click.command(
+    help="Given the titanic zip file (see dataset_folder and zip_name), exctract it"
+    ", preprocess it and save it as npy file"
+)
+@click.option("--dataset-folder", default="../data", type=str)
+@click.option("--zip-name", default="titanic.csv", type=str)
+@click.option("--data-name", default="train.csv", type=str)
+def preprocess(dataset_folder, zip_name, data_name):
+    # path = "../data/train.csv" if len(sys.argv) < 2 else sys.argv[1]
+    # zip_name = "../data/train.csv" if len(sys.argv) < 3 else sys.argv[2]
+    # data_name = "../data/train.csv" if len(sys.argv) < 4 else sys.argv[3]
 
-    train_set = pd.read_csv("../data/train.csv", low_memory=False).drop(["PassengerId", "Name", "Ticket", "Cabin"], axis=1)
+    extract_data(path=dataset_folder, zip_name=zip_name, data_name=data_name)
+
+    train_set = pd.read_csv(f"{dataset_folder}/{data_name}", low_memory=False).drop(["PassengerId", "Name", "Ticket", "Cabin"], axis=1)
     train_set = preprocess_data(train_set)
 
     create_data_viz(train_set)
@@ -67,3 +80,6 @@ if __name__ == "__main__":
 
     np.save("../data/train_set.npy", train_set)
     np.save("../data/train_labels.npy", train_labels)
+
+if __name__ == "__main__":
+    preprocess()
